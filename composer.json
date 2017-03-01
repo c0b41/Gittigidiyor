@@ -1,0 +1,14 @@
+{
+    "name": "c0b41/gittigidiyor",
+    "description": "Gittigidiyor ServiceProvider",
+    "type": "laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ayhankuru",
+            "email": "ayhankuru@yandex.com.tr"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
