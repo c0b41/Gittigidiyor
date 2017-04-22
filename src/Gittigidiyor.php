@@ -1287,34 +1287,12 @@ class GittiGidiyor {
 	   	}
 	   	$soapParams['lang'] = $this->lang;
 
-    if($this->checkOnline($url)){
+    
       $soapClient = new SoapClient($url, array('login' => $this->auth_user, 'password' => $this->auth_pass, 'authentication' => SOAP_AUTHENTICATION_BASIC));
   		$result = $soapClient->__soapCall($method,$soapParams);
 
   		return $result;
-    } else {
-      return null;
-    }
-
-
 
 	}
-
-  private function checkOnline($domain) {
-   $curlInit = curl_init($domain);
-   curl_setopt($curlInit,CURLOPT_CONNECTTIMEOUT,10);
-   curl_setopt($curlInit,CURLOPT_HEADER,true);
-   curl_setopt($curlInit,CURLOPT_NOBODY,true);
-   curl_setopt($curlInit,CURLOPT_RETURNTRANSFER,true);
-
-   //get answer
-   $response = curl_exec($curlInit);
-
-   curl_close($curlInit);
-   if ($response) return true;
-   return false;
-}
-
-
 
 }
