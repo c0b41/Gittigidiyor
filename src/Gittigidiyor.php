@@ -207,6 +207,44 @@ class GittiGidiyor {
 		return $this->clientConnect('anonymous','Category','getCategories',get_defined_vars());
 	}
 
+	public function getAllCategories(){
+
+		$first_data = $this->getCategories(0,1,false);
+
+		$counter = 0;
+    $categoryCount = $first_data->categoryCount;
+    $start = 1;
+    $end = ceil($categoryCount/100);
+    $temp = [];
+    $result = [];
+
+   	 while($start <= $end){
+   	  $data = $this->getCategories($counter,100,false);
+   	    foreach($data->categories->category as $category){
+   	      $kategori = "";
+   	       $temp[$category->categoryCode] = $category->categoryName;
+   	         if(strlen($category->categoryCode)>1){
+   	              for($i=1;$i<=strlen($category->categoryCode);$i++){
+   	                  if($i>1){ $kategori .= " > "; }
+   	                  $kategori .= $temp[substr($category->categoryCode, 0, $i)];
+   	              }
+   	         }else{
+   	            $kategori .= $category->categoryName;
+   	          }
+   	          $result[] = array(
+   	               "categoryCode" => $category->categoryCode,
+   	                "categoryName" => $kategori
+   	            );
+   	        }
+   	        $counter += 100;
+   	        $start++;
+   	}
+
+
+   	return $result;
+
+	}
+
 
 	/**
 	 * Kategori bilgilerinde zaman icerisinde degisiklik olabilmektedir.
