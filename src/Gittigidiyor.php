@@ -28,10 +28,6 @@ class GittiGidiyor {
 
   }
 
-  public function display(){
-    return 'dfgdf';
-  }
-
   private function checkConfig($conf){
 
     if(!isset($conf['apikey'])  ||
@@ -209,39 +205,36 @@ class GittiGidiyor {
 
 	public function getAllCategories(){
 
-		$first_data = $this->getCategories(0,1,false);
+	 	$result = $this->getCategories(0,1,false);
+    
+    $categoryCount = $result->categoryCount;
+    $sayi = 0;
+    $baslangic = 1;
+    $bitis = ceil($categoryCount/100);
 
-		$counter = 0;
-    $categoryCount = $first_data->categoryCount;
-    $start = 1;
-    $end = ceil($categoryCount/100);
-    $temp = [];
-    $result = [];
+    $temp_kategori = array();
+    $data = array();
+ 		
+ 		while($baslangic <= $bitis){
+ 			
+ 			$result = $this->getCategories($sayi,100,false);
+ 			foreach($result->categories->category as $category){
 
-   	 while($start <= $end){
-   	  $data = $this->getCategories($counter,100,false);
-   	    foreach($data->categories->category as $category){
-   	      $kategori = "";
-   	       $temp[$category->categoryCode] = $category->categoryName;
-   	         if(strlen($category->categoryCode)>1){
-   	              for($i=1;$i<=strlen($category->categoryCode);$i++){
-   	                  if($i>1){ $kategori .= " > "; }
-   	                  $kategori .= $temp[substr($category->categoryCode, 0, $i)];
-   	              }
-   	         }else{
-   	            $kategori .= $category->categoryName;
-   	          }
-   	          $result[] = array(
-   	               "categoryCode" => $category->categoryCode,
-   	                "categoryName" => $kategori
-   	            );
-   	        }
-   	        $counter += 100;
-   	        $start++;
-   	}
+ 				$data[] = array(
+          "category_id" => $category->categoryCode,
+          "category_name" => $category->categoryName,
+        );
+
+ 			}
+
+ 			$sayi += 100;
+      $baslangic++;
+
+ 		}
 
 
-   	return $result;
+
+   	return $data;
 
 	}
 
